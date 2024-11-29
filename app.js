@@ -6,6 +6,7 @@ const logger = require("morgan");
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
+
 const projectsRouter = require("./routes/projects");
 const { connect } = require("mongoose");
 
@@ -17,7 +18,6 @@ const app = express();
 app.use(cors());
 
 config({ path: ".env.development" });
-
 const { DB_URI, DB_NAME } = process.env;
 
 // view engine setup
@@ -31,6 +31,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+
 app.use("/projects", projectsRouter);
 
 // catch 404 and forward to error handler
@@ -53,4 +54,8 @@ module.exports = app;
 
 connect(DB_URI, { dbName: DB_NAME }).then((r) => {
   console.log(`successfully connect mongo db. DB_NAME=${DB_NAME}`);
+});
+
+app.listen(3000, () => {
+  console.log("server is running on port 3000");
 });
