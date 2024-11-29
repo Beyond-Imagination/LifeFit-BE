@@ -6,14 +6,18 @@ const logger = require("morgan");
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
+
+const projectsRouter = require("./routes/projects");
 const { connect } = require("mongoose");
 
 const { config } = require("dotenv");
+const cors = require("cors");
 
 const app = express();
 
-config({ path: ".env.development" });
+app.use(cors());
 
+config({ path: ".env.development" });
 const { DB_URI, DB_NAME } = process.env;
 
 // view engine setup
@@ -27,6 +31,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+
+app.use("/projects", projectsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
