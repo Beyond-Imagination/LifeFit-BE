@@ -1,9 +1,10 @@
 const express = require("express");
 const { Project } = require("../models/projects");
 const { ProjectComment } = require("../models/project_comments");
+const verifyToken = require("../middlewares/verifyToken");
 const router = express.Router();
 
-router.get("/", async function (req, res, next) {
+router.get("/", verifyToken, async function (req, res, next) {
   const { lastId, size } = req.query; // 쿼리 파라미터에서 lastId와 size를 가져옴
   const limit = parseInt(size) || 10; // size가 없으면 기본값은 10
   const userId = req.user.id;
@@ -48,7 +49,7 @@ router.get("/", async function (req, res, next) {
   }
 });
 
-router.get("/:id", async function (req, res, next) {
+router.get("/:id", verifyToken, async function (req, res, next) {
   const { id } = req.params;
   const userId = req.user.id;
   try {
@@ -84,7 +85,7 @@ router.get("/:id", async function (req, res, next) {
   }
 });
 
-router.post("/:id/like", async function (req, res, next) {
+router.post("/:id/like", verifyToken, async function (req, res, next) {
   const { id } = req.params;
   const userId = req.user.id;
 
@@ -118,7 +119,7 @@ router.post("/:id/like", async function (req, res, next) {
   }
 });
 
-router.post("/:id/comment", async function (req, res, next) {
+router.post("/:id/comment", verifyToken, async function (req, res, next) {
   const { id } = req.params;
   const userId = req.user.id;
   const { content } = req.body;
