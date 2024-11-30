@@ -55,7 +55,3 @@ module.exports = app;
 connect(DB_URI, { dbName: DB_NAME }).then((r) => {
   console.log(`successfully connect mongo db. DB_NAME=${DB_NAME}`);
 });
-
-app.listen(3000, () => {
-  console.log("server is running on port 3000");
-});

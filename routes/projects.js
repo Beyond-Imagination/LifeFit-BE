@@ -6,7 +6,7 @@ const router = express.Router();
 router.get("/", async function (req, res, next) {
   const { lastId, size } = req.query; // 쿼리 파라미터에서 lastId와 size를 가져옴
   const limit = parseInt(size) || 10; // size가 없으면 기본값은 10
-  const userId = "674743e566b80d2c0f366243"; // TODO 나중에 로그인 구현 완료되면 수정
+  const userId = req.user.id;
   try {
     let query = {};
 
@@ -50,7 +50,7 @@ router.get("/", async function (req, res, next) {
 
 router.get("/:id", async function (req, res, next) {
   const { id } = req.params;
-  const userId = "674743e566b80d2c0f366243"; // TODO 나중에 로그인 구현 완료되면 수정
+  const userId = req.user.id;
   try {
     const project = await Project.findById(id);
     if (!project) {
@@ -86,7 +86,7 @@ router.get("/:id", async function (req, res, next) {
 
 router.post("/:id/like", async function (req, res, next) {
   const { id } = req.params;
-  const userId = "674743e566b80d2c0f366243"; // TODO 나중에 로그인 구현 완료되면 수정
+  const userId = req.user.id;
 
   try {
     const project = await Project.findById(id);
@@ -120,7 +120,7 @@ router.post("/:id/like", async function (req, res, next) {
 
 router.post("/:id/comment", async function (req, res, next) {
   const { id } = req.params;
-  const userId = "674743e566b80d2c0f366243"; // TODO 나중에 로그인 구현 완료되면 수정
+  const userId = req.user.id;
   const { content } = req.body;
 
   try {

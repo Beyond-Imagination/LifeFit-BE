@@ -9,11 +9,6 @@ const {
   deleteUser,
 } = require("../controllers/user");
 
-/* GET users listing. */
-router.get("/", function (req, res, next) {
-  res.send("respond with a resource");
-});
-
 // Create a new user
 router.post("/", addUser);
 
