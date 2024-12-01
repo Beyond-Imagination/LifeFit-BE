@@ -7,6 +7,8 @@ const {
   getUser,
   updateUser,
   deleteUser,
+  getLikedProjects,
+  getCommentedProjects,
 } = require("../controllers/user");
 const {
   getProfileImage,
@@ -31,6 +33,9 @@ router.put("/:id/img", verifyToken, addProfileImage);
 
 // router.delete("/:id/img", deleteProfileImage);
 
-router.post("/up", addProfileImage);
+// router.post("/up", addProfileImage);
+
+router.get("/:id/like", verifyToken, getLikedProjects);
+router.get("/:id/comments", verifyToken, getCommentedProjects);
 
 module.exports = router;
