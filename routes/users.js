@@ -8,6 +8,11 @@ const {
   updateUser,
   deleteUser,
 } = require("../controllers/user");
+const {
+  getProfileImage,
+  addProfileImage,
+  deleteProfileImage,
+} = require("../controllers/userImg");
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
@@ -25,5 +30,12 @@ router.put("/:id", verifyToken, updateUser);
 
 // Delete a user by ID
 router.delete("/:id", verifyToken, deleteUser);
+
+router.get("/:id/img", verifyToken, getProfileImage);
+router.put("/:id/img", verifyToken, addProfileImage);
+
+// router.delete("/:id/img", deleteProfileImage);
+
+router.post("/up", addProfileImage);
 
 module.exports = router;
