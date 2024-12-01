@@ -14,11 +14,6 @@ const {
   deleteProfileImage,
 } = require("../controllers/userImg");
 
-/* GET users listing. */
-router.get("/", function (req, res, next) {
-  res.send("respond with a resource");
-});
-
 // Create a new user
 router.post("/", addUser);
 

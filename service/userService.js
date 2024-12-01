@@ -36,7 +36,7 @@ const loginUser = async (email, password) => {
     // "secret",
     {
       expiresIn: "1h",
-    }
+    },
   );
 
   return {
@@ -73,7 +73,7 @@ const updateUserById = async (id, currentPassword, updateData) => {
   }
 
   return await User.findByIdAndUpdate(id, updateData, { new: true }).select(
-    "-password"
+    "-password",
   );
 };
 
