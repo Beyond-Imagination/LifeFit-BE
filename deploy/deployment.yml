@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: life-fit-api
+spec:
+  progressDeadlineSeconds: 900
+  selector:
+    matchLabels:
+      app: life-fit-api
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  revisionHistoryLimit: 3
+  template:
+    metadata:
+      labels:
+        app: life-fit-api
+    spec:
+      containers:
+        - image: ghcr.io/beyond-imagination/life-fit:latest
+          imagePullPolicy: Always
+          name: life-fit-api
+          resources:
+            limits:
+              cpu: 600m
+              memory: 2048Mi
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - secretRef:
+                name: lifefit-secret
+          volumeMounts:
+            - name: life-fit-volume
+              mountPath: /usr/src/app/.env.development
+              subPath: env.development
+          env:
+            - name: APP_NAME
+              value: life-fit-api
+      volumes:
+        - name: life-fit-volume
+          secret:
+            secretName: lifefit-secret
+      imagePullSecrets:
+        - name: ghcr-login-secret
+      nodeSelector:
+        performance: high
