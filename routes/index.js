@@ -3,11 +3,6 @@ const router = express.Router();
 
 const { loginUser } = require("../service/userService");
 
-/* GET home page. */
-router.get("/", function (req, res, next) {
-  res.json([{ id: 1, username: "daisy" }]);
-});
-
 router.post("/join", function (req, res) {
   res.json({ message: "join" });
 });
