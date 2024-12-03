@@ -9,8 +9,8 @@ const usersRouter = require("./routes/users");
 
 const projectsRouter = require("./routes/projects");
 
-const communityRouter = require("./routes/communityRouter")
-const commentRouter = require("./routes/commentRouter")
+const communityRouter = require("./routes/communityRouter");
+const commentRouter = require("./routes/commentRouter");
 const { connect } = require("mongoose");
 
 const { config } = require("dotenv");
@@ -40,8 +40,8 @@ app.use("/users", usersRouter);
 
 app.use("/projects", projectsRouter);
 
-app.use("/api/community", communityRouter)
-app.use("/api/comment", commentRouter)
+app.use("/api/community", communityRouter);
+app.use("/api/comment", commentRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -66,5 +66,5 @@ connect(DB_URI, { dbName: DB_NAME }).then((r) => {
 });
 
 app.listen(8080, () => {
-  console.log(`app is listening on port 8080`)
-})
+  console.log(`app is listening on port 8080`);
+});
