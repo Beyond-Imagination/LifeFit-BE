@@ -1,12 +1,16 @@
 const Community = require("../models/community")
+const jwt = require("jsonwebtoken")
 
 const createPost = async(req, res) => {
     try {
         const { title, body, image } = req.body
+        const token = req.cookies.token
+
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
 
         if (title && body) {
             await Community.create({
-                user: "",
+                user: decodedToken.nickname,
                 title: title,
                 body: body,
                 image: image,
