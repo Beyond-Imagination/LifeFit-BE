@@ -1,30 +1,38 @@
-const Community = require("../models/community");
-const jwt = require("jsonwebtoken");
+const Community = require("../models/community")
+const jwt = require("jsonwebtoken")
 
-const createPost = async (req, res) => {
-  try {
-    const { title, body, image } = req.body;
-    const token = req.cookies.token;
+const createPost = async(req, res) => {
+    try {
+        const { title, body } = req.body
 
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+        const token = req.cookies.token
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
 
-    if (title && body) {
-      await Community.create({
-        user: decodedToken.nickname,
-        title: title,
-        body: body,
-        image: image,
-        likes: 0,
-      });
+        const url = req.protocol + "://" + req.get("host")
 
-      return res.status(201).send("post is successfully created");
-    } else {
-      return res.status(400).send("request is inaccurate");
+        console.log(title, body, req.file.filename)
+
+        if (title && body) {
+            try {
+                await Community.create({
+                    user: decodedToken.nickname,
+                    title: title,
+                    body: body,
+                    image: url + "/uploads/community/" + req.file.filename,
+                    likes: 0
+                })
+            } catch(error) {
+                console.log(error)
+            }
+
+            return res.status(201).send("post is successfully created")
+        } else {
+            return res.status(400).send("request is inaccurate")
+        }
+    } catch (error) {
+        console.log(error)
     }
-  } catch (error) {
-    console.log(error);
-  }
-};
+}
 
 const getCommunityPostsByChunk = async (req, res) => {
   try {

@@ -14,6 +14,7 @@ const createComment = async (req, res) => {
       postId: postId,
     });
 
+
     res.status(201).send("comment created successfully");
   } catch (error) {
     console.log(error);

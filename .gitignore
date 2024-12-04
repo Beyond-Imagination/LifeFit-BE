@@ -2,3 +2,5 @@
 /.env.development
 /.idea/
 /package-lock.json
+uploads/community/**
+uploads/users/profile/**
