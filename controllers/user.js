@@ -2,7 +2,7 @@ const {
   createUser,
   getUserById,
   updateUserById,
-  deleteUserById,
+  deleteUserById
 } = require("../service/userService");
 const { Project } = require("../models/projects");
 const { ProjectComment } = require("../models/project_comments");
@@ -40,7 +40,7 @@ const updateUser = async (req, res) => {
     const user = await updateUserById(
       req.params.id,
       currentPassword,
-      updateData,
+      updateData
     );
     if (!user) {
       return res.status(404).json({ error: "User not found" });
@@ -79,15 +79,15 @@ const getLikedProjects = async (req, res) => {
           id: project._id,
           title: project.title,
           likes: project.likes.length,
-          createdAt: project.createdAt,
+          createdAt: project.createdAt
         };
-      }),
+      })
     );
   } catch (error) {
     console.error("Error fetching liked projects:", error);
     res.status(500).json({
       success: false,
-      message: "Error fetching liked projects",
+      message: "Error fetching liked projects"
     });
   }
 };
@@ -98,7 +98,7 @@ const getCommentedProjects = async (req, res) => {
   try {
     // 1. 댓글에서 해당 유저가 작성한 댓글을 찾기
     const comments = await ProjectComment.find({ author: userId }).populate(
-      "project",
+      "project"
     );
 
     // 2. 프로젝트 리스트 구성
@@ -108,13 +108,13 @@ const getCommentedProjects = async (req, res) => {
         (project, index, self) =>
           project &&
           self.findIndex((p) => p._id.toString() === project._id.toString()) ===
-            index, // 중복 제거
+          index // 중복 제거
       )
       .map((project) => ({
         id: project._id,
         title: project.title,
         likes: project.likes.length,
-        createdAt: project.createdAt,
+        createdAt: project.createdAt
       }));
 
     res.status(200).json(projects);
@@ -122,7 +122,7 @@ const getCommentedProjects = async (req, res) => {
     console.error("Error fetching commented projects:", error);
     res.status(500).json({
       success: false,
-      message: "Error fetching commented projects",
+      message: "Error fetching commented projects"
     });
   }
 };
@@ -133,5 +133,5 @@ module.exports = {
   updateUser,
   deleteUser,
   getLikedProjects,
-  getCommentedProjects,
+  getCommentedProjects
 };

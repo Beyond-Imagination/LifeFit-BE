@@ -5,8 +5,8 @@ const createPost = async(req, res) => {
     try {
         const { title, body } = req.body
 
-        // const token = req.cookies.token
-        // const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
+        const token = req.cookies.token
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
 
         const url = req.protocol + "://" + req.get("host")
 
@@ -15,7 +15,7 @@ const createPost = async(req, res) => {
         if (title && body) {
             try {
                 await Community.create({
-                    user: "decodedToken.nickname",
+                    user: decodedToken.nickname,
                     title: title,
                     body: body,
                     image: url + "/uploads/community/" + req.file.filename,
@@ -34,52 +34,52 @@ const createPost = async(req, res) => {
     }
 }
 
-const getCommunityPostsByChunk = async(req, res) => {
-    try {
-        const { start, end } = req.query
+const getCommunityPostsByChunk = async (req, res) => {
+  try {
+    const { start, end } = req.query;
 
-        console.log(start, end)
+    console.log(start, end);
 
-        const allPosts = await Community.find({})
+    const allPosts = await Community.find({});
 
-        let chunk = []
-        for (let i = start; i < end; i++) {
-            chunk.push(allPosts[i])
-        }
-
-        res.status(200).send(chunk)
-    } catch (error) {
-        console.log(error)
+    let chunk = [];
+    for (let i = start; i < end; i++) {
+      chunk.push(allPosts[i]);
     }
-}
 
-const getCommunityPostsById = async(req, res) => {
-    try {
-        const { id } = req.params
+    res.status(200).send(chunk);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-        const post = await Community.findById(id)
+const getCommunityPostsById = async (req, res) => {
+  try {
+    const { id } = req.params;
 
-        res.status(200).send(post)
-    } catch (error) {
-        console.log(error)
-    }
-}
+    const post = await Community.findById(id);
 
-const likePost = async(req, res) => {
-    try {
-        const { postId, likes } = req.body
+    res.status(200).send(post);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-        await Community.findByIdAndUpdate(postId, { likes: likes })
-        
-        res.status(200).send("likes is successfully reflect on post")
-    } catch (error) {
-        console.log(error)
-    }
-}
+const likePost = async (req, res) => {
+  try {
+    const { postId, likes } = req.body;
+
+    await Community.findByIdAndUpdate(postId, { likes: likes });
+
+    res.status(200).send("likes is successfully reflect on post");
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 module.exports = {
-    createPost,
-    getCommunityPostsByChunk,
-    getCommunityPostsById,
-    likePost
-}
+  createPost,
+  getCommunityPostsByChunk,
+  getCommunityPostsById,
+  likePost,
+};
