@@ -4,12 +4,12 @@ const jwt = require("jsonwebtoken")
 const createComment = async(req, res) => {
     try {
         const { body, postId } = req.body
-        const token = req.cookies.token
 
-        const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
+        // const token = req.cookies.token
+        // const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
 
         await Comment.create({
-            user: decodedToken.nickname,
+            user: "decodedToken.nickname",
             body: body,
             postId: postId
         })

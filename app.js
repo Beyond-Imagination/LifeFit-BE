@@ -3,6 +3,7 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+const bodyParser = require("body-parser")
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
@@ -18,7 +19,11 @@ const cors = require("cors");
 
 const app = express();
 
-app.use(cors());
+const origin = ["http://localhost:3000"]
+app.use(cors({
+  origin: origin,
+  credentials: true
+}));
 
 config({ path: ".env.development" });
 const { DB_URI, DB_NAME } = process.env;
@@ -27,13 +32,17 @@ const { DB_URI, DB_NAME } = process.env;
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({
+  extended: false
+}))
+
 app.use(logger("dev"));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads", express.static("uploads"));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);

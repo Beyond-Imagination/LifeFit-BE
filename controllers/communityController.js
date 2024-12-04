@@ -3,19 +3,27 @@ const jwt = require("jsonwebtoken")
 
 const createPost = async(req, res) => {
     try {
-        const { title, body, image } = req.body
-        const token = req.cookies.token
+        const { title, body } = req.body
 
-        const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
+        // const token = req.cookies.token
+        // const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
+
+        const url = req.protocol + "://" + req.get("host")
+
+        console.log(title, body, req.file.filename)
 
         if (title && body) {
-            await Community.create({
-                user: decodedToken.nickname,
-                title: title,
-                body: body,
-                image: image,
-                likes: 0
-            })
+            try {
+                await Community.create({
+                    user: "decodedToken.nickname",
+                    title: title,
+                    body: body,
+                    image: url + "/uploads/community/" + req.file.filename,
+                    likes: 0
+                })
+            } catch(error) {
+                console.log(error)
+            }
 
             return res.status(201).send("post is successfully created")
         } else {
